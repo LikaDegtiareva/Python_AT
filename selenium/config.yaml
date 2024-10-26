@@ -1,0 +1,23 @@
+web_page:
+  address: https://test-stand.gb.ru
+  browser: chrome
+
+user:
+  login: Kukumber@
+  password: 116c74cc50
+
+unknown_user:
+  login: test
+  password: test
+
+pause:
+  wait: 3
+  sleep: 3
+
+post:
+  - title: Hello
+    description: world
+    content: Hallo world
+  - title: Hallo
+    content: Welt
+    description: Hallo Welt
