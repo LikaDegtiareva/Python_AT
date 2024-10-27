@@ -4,6 +4,19 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+class Parameters:
+    your_name = "name"
+    your_email = "my_name@mail.ru"
+    content_text = "testcontent"
+    any_text = "test"
+    unknown_password = "test"
+    unknown_user = "test"
+    browser = "chrome"
+    sleep_time = 1
+    wait = 3
+    username = "Kukumber@"
+    password = "116c74cc50"
+
 class TestSearchLocators:
     LOCATOR_CONTENT_TEXT = (By.XPATH, """//*[@id="contact"]/div[3]/label/span/textarea""")
     LOCATOR_CONTACT_US = (By.XPATH, """//*[@id="contact"]/div[4]/button/span""")
