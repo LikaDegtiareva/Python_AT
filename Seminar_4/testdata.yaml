@@ -1,0 +1,9 @@
+address: https://test-stand.gb.ru
+# driver_path: C:\Program Files\Selenium Driver\chrome-win64
+browser: chrome
+sleep_time: 1
+wait: 3
+
+username: Kukumber@
+password: 116c74cc50
+
