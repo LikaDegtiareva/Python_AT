@@ -1,5 +1,3 @@
-from lxml.saxparser import element
-
 from BaseApp import BasePage
 from selenium.webdriver.common.by import By
 import logging
@@ -9,7 +7,7 @@ class TestSearchLocators:
     LOCATOR_CONTACT_US = (By.XPATH, """//*[@id="contact"]/div[4]/button/span""")
     LOCATOR_LOGIN_FIELD = (By.XPATH, """//*[@id="login"]/div[1]/label/input""")
     LOCATOR_PASS_FIELD = (By.XPATH, """//*[@id="login"]/div[2]/label/input""")
-    LOCATOR_LOGIN_BTN = (By.CSS_SELECTOR, """button""")
+    LOCATOR_LOGIN_BTN = (By.XPATH, """//*[@id="login"]/div[3]/button/div""")
     LOCATOR_ERROR_FIELD =  (By.XPATH, """//*[@id="app"]/main/div/div/div[2]/h2""")
     LOCATOR_HELLO = (By.XPATH, """//*[@id="app"]/main/nav/ul/li[3]/a""")
     LOCATOR_NEW_BTN = (By.XPATH, """//*[@id="create-btn"]""")
@@ -29,7 +27,7 @@ class OperationsHelper(BasePage):
             element_name = description
         else:
             element_name = locator
-        logging.info(f"Send {word} to element {element_name}")
+        logging.debug(f"Send {word} to element {element_name}")
         field = self.find_element(locator)
         if not field:
             logging.error(f"Element {locator} not found")
@@ -42,6 +40,41 @@ class OperationsHelper(BasePage):
             return False
         return True
 
+# функция для вывода текста и текстовых сообщений
+    def get_text_from_element(self, locator, description=None):
+        if description:
+            element_name = description
+        else:
+            element_name = locator
+        field = self.find_element(locator, time=2)
+        if not field:
+            return None
+        try:
+            text = field.text
+        except:
+            logging.exception(f"Element while get test from {element_name}")
+            return None
+        logging.debug(f"We find text {text} in field {element_name}")
+        return text
+
+# функция для клика по кнопке
+    def click_button(self, locator, description=None):
+        if description:
+            element_name = description
+        else:
+            element_name = locator
+        button = self.find_element(locator)
+        if not button:
+            return  False
+        try:
+            button.click()
+        except:
+            logging.exception(f"Exception with clik")
+            return False
+        logging.debug(f"Click button {element_name}")
+        return True
+
+
 # МЕТОДЫ ВВОДА ТЕКСТА
 # поиск поля логин, очистка поля логин, ввод в поле теста
     def enter_login(self, word):
@@ -49,86 +82,64 @@ class OperationsHelper(BasePage):
 
 # посик поля пароль, очистка поля пароль, ввод текста
     def enter_pass(self, word):
-        logging.info(f"Send {word} to element {TestSearchLocators.LOCATOR_PASS_FIELD[1]}")
-        login_field = self.find_element(TestSearchLocators.LOCATOR_PASS_FIELD)
-        login_field.clear()
-        login_field.send_keys(word)
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_PASS_FIELD, word, description="password form")
 
 # поиск элемента titlt, очистка поля, ввод текста
     def enter_title(self, word):
-        login_field = self.find_element(TestSearchLocators.LOCATOR_TITLE)
-        login_field.clear()
-        login_field.send_keys(word)
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_TITLE, word, description="title")
 
 # поиск элемента description, очистка поля, ввод текста
     def enter_description(self, word):
-        login_field = self.find_element(TestSearchLocators.LOCATOR_DESCRIPTION)
-        login_field.clear()
-        login_field.send_keys(word)
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_DESCRIPTION, word, description="description")
 
 # поиск элемента content, очистка поля, ввод текста
     def enter_content(self, word):
-        login_field = self.find_element(TestSearchLocators.LOCATOR_CONTENT)
-        login_field.clear()
-        login_field.send_keys(word)
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_CONTENT, word, description="content")
 
 # поиск элемента имя, очистка, ввод текста
-    def enter_your_name(self, your_name):
-        input = self.find_element(TestSearchLocators.LOCATOR_YOUR_NAME)
-        input.clear()
-        input.send_keys(your_name)
+    def enter_your_name(self, word):
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_YOUR_NAME, word, description="your name")
 
 # поиск элемента email, очистка, ввод текста
-    def enter_your_email(self, your_email):
-        input = self.find_element(TestSearchLocators.LOCATOR_YOUR_EMAIL)
-        input.clear()
-        input.send_keys(your_email)
+    def enter_your_email(self, word):
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_YOUR_EMAIL, word, description="email")
 
 # поиск элемента контента сообщения, очистка, ввод текста
-    def enter_content_text(self, content_text):
-        input = self.find_element(TestSearchLocators.LOCATOR_CONTENT_TEXT)
-        input.clear()
-        input.send_keys(content_text)
+    def enter_content_text(self, word):
+        self.enter_text_into_field(TestSearchLocators.LOCATOR_CONTENT_TEXT, word, description="content_text")
 
 # МЕТОДЫ КЛИКА ПО КНОПКЕ
 # поиск кнопки, клик по кнопке
     def click_login_button(self):
-        logging.info("Click login button")
-        self.find_element(TestSearchLocators.LOCATOR_LOGIN_BTN).click()
+        self.click_button(TestSearchLocators.LOCATOR_LOGIN_BTN, description="login_button")
 
 # поиск кнопки создания поста, нажатие кнопки
     def click_new_post_btn(self):
-        self.find_element(TestSearchLocators.LOCATOR_NEW_BTN).click()
+        self.click_button(TestSearchLocators.LOCATOR_NEW_BTN, description="new_post_btn")
 
 # поиск кнопки save, нажатие кнопки
     def click_save_btn(self):
-        self.find_element(TestSearchLocators.LOCATOR_SAVE_BTN).click()
+        self.click_button(TestSearchLocators.LOCATOR_SAVE_BTN, description="save_btn")
 
 # клик по кнопке contact us для отправки сообщения
     def click_contact_us(self):
-        self.find_element(TestSearchLocators.LOCATOR_CONTACT_US).click()
+        self.click_button(TestSearchLocators.LOCATOR_CONTACT_US, description="contact_us_btn")
 
 # МЕТОДЫ ДЛЯ ВЫВОДА ТЕКСТОВЫХ СООБЩЕНИЙ
 # поиск элемента об ошибки, проверка вывода текста ошибки
     def get_error_text(self):
-        error_field = self.find_element(TestSearchLocators.LOCATOR_ERROR_FIELD, time=3)
-        text = error_field.text
-        logging.info(f"We find text {text} in error field {TestSearchLocators.LOCATOR_ERROR_FIELD[1]}")
-        return text
+        return self.get_text_from_element(TestSearchLocators.LOCATOR_ERROR_FIELD, description="error_text")
 
 # поиск элемента имя пользователя, проверка вывода текста Hellow, ...
     def get_user_text(self):
-        user_field = self.find_element(TestSearchLocators.LOCATOR_HELLO, time=3)
-        text = user_field.text
-        return text
+        return self.get_text_from_element(TestSearchLocators.LOCATOR_HELLO, description="user_text")
 
 # поиск элемента названия поста после сохранения с проверкой текста названия поста
     def get_res_text(self):
-        res_field = self.find_element(TestSearchLocators.LOCATOR_POST_TITLE, time=3)
-        text = res_field.text
-        return text
+        return self.get_text_from_element(TestSearchLocators.LOCATOR_POST_TITLE, description="res_text")
 
-# вывод окна алерт с текстом Exception with alert
+
+# ВЫВОД ОКНА АЛЕРТ С СООБЩЕНИЕМ: Exception with alert
     def get_alert_message(self):
          try:
              alert = self.driver.switch_to.alert

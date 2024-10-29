@@ -1,7 +1,5 @@
 import time
-
 from testpage import OperationsHelper
-
 import logging
 
 
