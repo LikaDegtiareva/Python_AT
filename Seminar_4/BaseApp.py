@@ -1,7 +1,7 @@
 import logging
-
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import  expected_conditions as EC
+
 
 class BasePage:
 
@@ -37,6 +37,7 @@ class BasePage:
             start_browsing = None
         return start_browsing
 
+# метод открытия страницы сайта
     def go_to_page(self, page):
         try:
             start_page = self.driver.get(self.base_url + page)

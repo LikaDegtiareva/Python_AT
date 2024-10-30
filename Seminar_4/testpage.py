@@ -1,23 +1,14 @@
 from BaseApp import BasePage
 from selenium.webdriver.common.by import By
 import logging
+import yaml
 
 class TestSearchLocators:
-    LOCATOR_CONTENT_TEXT = (By.XPATH, """//*[@id="contact"]/div[3]/label/span/textarea""")
-    LOCATOR_CONTACT_US = (By.XPATH, """//*[@id="contact"]/div[4]/button/span""")
-    LOCATOR_LOGIN_FIELD = (By.XPATH, """//*[@id="login"]/div[1]/label/input""")
-    LOCATOR_PASS_FIELD = (By.XPATH, """//*[@id="login"]/div[2]/label/input""")
-    LOCATOR_LOGIN_BTN = (By.XPATH, """//*[@id="login"]/div[3]/button/div""")
-    LOCATOR_ERROR_FIELD =  (By.XPATH, """//*[@id="app"]/main/div/div/div[2]/h2""")
-    LOCATOR_HELLO = (By.XPATH, """//*[@id="app"]/main/nav/ul/li[3]/a""")
-    LOCATOR_NEW_BTN = (By.XPATH, """//*[@id="create-btn"]""")
-    LOCATOR_TITLE = (By.XPATH, """//*[@id="create-item"]/div/div/div[1]/div/label/input""")
-    LOCATOR_DESCRIPTION = (By.XPATH, """//*[@id="create-item"]/div/div/div[2]/div/label/span/textarea""")
-    LOCATOR_CONTENT = (By.XPATH, """//*[@id="create-item"]/div/div/div[3]/div/label/span/textarea""")
-    LOCATOR_SAVE_BTN = (By.XPATH, """//*[@id="create-item"]/div/div/div[7]/div/button/span""")
-    LOCATOR_POST_TITLE = (By.XPATH, """//*[@id="app"]/main/div/div[1]/h1""")
-    LOCATOR_YOUR_NAME = (By.XPATH, """//*[@id="contact"]/div[1]/label/input""")
-    LOCATOR_YOUR_EMAIL = (By.XPATH, """//*[@id="contact"]/div[1]/label/input""")
+    ids = dict()
+    with open("locators.yaml") as f:
+        locators = yaml.safe_load(f)
+    for locator in locators["xpath"].keys():
+        ids[locator] = (By.XPATH, locators["xpath"][locator])
 
 
 class OperationsHelper(BasePage):
@@ -68,75 +59,75 @@ class OperationsHelper(BasePage):
             return  False
         try:
             button.click()
-        except:
+        except Exception as error:
+            print(error)
             logging.exception(f"Exception with clik")
             return False
         logging.debug(f"Click button {element_name}")
         return True
 
-
 # МЕТОДЫ ВВОДА ТЕКСТА
 # поиск поля логин, очистка поля логин, ввод в поле теста
     def enter_login(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_LOGIN_FIELD, word, description="login form")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_LOGIN_FIELD"], word, description="login form")
 
 # посик поля пароль, очистка поля пароль, ввод текста
     def enter_pass(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_PASS_FIELD, word, description="password form")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_PASS_FIELD"], word, description="password form")
 
 # поиск элемента titlt, очистка поля, ввод текста
     def enter_title(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_TITLE, word, description="title")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_TITLE"], word, description="title")
 
 # поиск элемента description, очистка поля, ввод текста
     def enter_description(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_DESCRIPTION, word, description="description")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_DESCRIPTION"], word, description="description")
 
 # поиск элемента content, очистка поля, ввод текста
     def enter_content(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_CONTENT, word, description="content")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_CONTENT"], word, description="content")
 
 # поиск элемента имя, очистка, ввод текста
     def enter_your_name(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_YOUR_NAME, word, description="your name")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_YOUR_NAME"], word, description="your name")
 
 # поиск элемента email, очистка, ввод текста
     def enter_your_email(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_YOUR_EMAIL, word, description="email")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_YOUR_EMAIL"], word, description="email")
 
 # поиск элемента контента сообщения, очистка, ввод текста
     def enter_content_text(self, word):
-        self.enter_text_into_field(TestSearchLocators.LOCATOR_CONTENT_TEXT, word, description="content_text")
+        self.enter_text_into_field(TestSearchLocators.ids["LOCATOR_CONTENT_TEXT"], word, description="content_text")
 
 # МЕТОДЫ КЛИКА ПО КНОПКЕ
 # поиск кнопки, клик по кнопке
     def click_login_button(self):
-        self.click_button(TestSearchLocators.LOCATOR_LOGIN_BTN, description="login_button")
+        self.click_button(TestSearchLocators.ids["LOCATOR_LOGIN_BTN"], description="login_button")
 
 # поиск кнопки создания поста, нажатие кнопки
     def click_new_post_btn(self):
-        self.click_button(TestSearchLocators.LOCATOR_NEW_BTN, description="new_post_btn")
+        self.click_button(TestSearchLocators.ids["LOCATOR_NEW_BTN"], description="new_post_btn")
 
 # поиск кнопки save, нажатие кнопки
     def click_save_btn(self):
-        self.click_button(TestSearchLocators.LOCATOR_SAVE_BTN, description="save_btn")
+        self.click_button(TestSearchLocators.ids["LOCATOR_SAVE_BTN"], description="save_btn")
 
 # клик по кнопке contact us для отправки сообщения
     def click_contact_us(self):
-        self.click_button(TestSearchLocators.LOCATOR_CONTACT_US, description="contact_us_btn")
+        self.click_button(TestSearchLocators.ids["LOCATOR_CONTACT_US"], description="contact_us_btn")
 
 # МЕТОДЫ ДЛЯ ВЫВОДА ТЕКСТОВЫХ СООБЩЕНИЙ
 # поиск элемента об ошибки, проверка вывода текста ошибки
     def get_error_text(self):
-        return self.get_text_from_element(TestSearchLocators.LOCATOR_ERROR_FIELD, description="error_text")
+        return self.get_text_from_element(TestSearchLocators.ids["LOCATOR_ERROR_FIELD"], description="error_text")
 
 # поиск элемента имя пользователя, проверка вывода текста Hellow, ...
     def get_user_text(self):
-        return self.get_text_from_element(TestSearchLocators.LOCATOR_HELLO, description="user_text")
+        return self.get_text_from_element(TestSearchLocators.ids["LOCATOR_HELLO"], description="user_text")
 
 # поиск элемента названия поста после сохранения с проверкой текста названия поста
     def get_res_text(self):
-        return self.get_text_from_element(TestSearchLocators.LOCATOR_POST_TITLE, description="res_text")
+        return self.get_text_from_element(TestSearchLocators.ids["LOCATOR_POST_TITLE"], description="res_text")
 
 
 # ВЫВОД ОКНА АЛЕРТ С СООБЩЕНИЕМ: Exception with alert
