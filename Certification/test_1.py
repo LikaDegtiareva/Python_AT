@@ -16,7 +16,6 @@ def test_step1(browser):
 # ввести верные логин и пароль, кликнуть по кнопке и проверить вывод текста Hellow
 def test_step2(browser):
      testpage = OperationsHelper(browser)
-     testpage.go_to_site()
      testpage.enter_login("Kukumber@")
      testpage.enter_pass("116c74cc50")
      testpage.click_login_button()
@@ -44,6 +43,3 @@ def test_step4(browser):
      time.sleep(2)
      message = testpage.get_alert_message()
      assert "Form successfully submitted" == message
-
-
-
