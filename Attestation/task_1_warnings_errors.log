@@ -1,0 +1,3 @@
+2025-03-14 15:36:43,962 - WARNING - task_1_all_level_logging - В этот файл попадают все логи с уровнем WARNING
+2025-03-14 15:36:43,962 - ERROR - task_1_all_level_logging - В этот файл попадают все логи с уровнем ERROR
+2025-03-14 15:36:43,962 - CRITICAL - task_1_all_level_logging - В этот файл попадают все логи с уровнем CRITICAL
